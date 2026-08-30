@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通讯录 · Hg</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="site-nav">
+        <div class="nav-logo">HG</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">终端主页</a>
+            <a href="contacts.html" class="nav-link active">通讯录</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <section class="contacts">
+            <!-- 左半边：预览面板（悬浮时显示对应联系人） -->
+            <aside class="preview" id="preview">
+                <p class="preview-placeholder">← 将鼠标移到右侧列表项上预览</p>
+            </aside>
+
+            <!-- 右半边：可滚动列表 -->
+            <section class="list-panel">
+                <header class="list-header">
+                    <h1>通讯录</h1>
+                    <button class="btn btn-primary" id="addBtn">+ 添加</button>
+                </header>
+                <ul class="contact-list" id="contactList"></ul>
+            </section>
+        </section>
+    </main>
+
+    <!-- 详情弹窗：点击列表项打开 -->
+    <div class="modal" id="detailModal" hidden>
+        <div class="modal-panel" id="detailPanel"></div>
+    </div>
+
+    <!-- 表单弹窗：添加/编辑共用 -->
+    <div class="modal" id="formModal" hidden>
+        <div class="modal-panel">
+            <h2 id="formTitle">添加联系人</h2>
+            <form id="contactForm">
+                <label>姓名
+                    <input name="name" required placeholder="必填">
+                </label>
+                <label>专业
+                    <input name="major" placeholder="如：计算机科学与技术">
+                </label>
+                <label>方向
+                    <input name="direction" placeholder="如：前端开发">
+                </label>
+                <label>简介
+                    <textarea name="intro" rows="3" placeholder="一句话介绍自己"></textarea>
+                </label>
+                <label>技能（用英文逗号分隔）
+                    <input name="skills" placeholder="如：HTML, CSS, JavaScript">
+                </label>
+                <label>GitHub
+                    <input name="github" placeholder="https://github.com/...">
+                </label>
+                <label>邮箱
+                    <input name="email" type="email" placeholder="example@qq.com">
+                </label>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn" id="cancelBtn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/contacts.js"></script>
+</body>
+</html>

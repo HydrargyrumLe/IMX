@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>终端主页 · Hg</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="site-nav">
+        <div class="nav-logo">HG</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">终端主页</a>
+            <a href="contacts.html" class="nav-link">通讯录</a>
+        </div>
+    </nav>
+
+    <main class="page">
+        <!-- 终端窗口 -->
+        <section class="terminal">
+            <div class="terminal-bar">
+                <span class="terminal-title">HYDRA-GRUM · TERMINAL v1.0</span>
+            </div>
+            <div class="terminal-body">
+                <!-- 历史输出由 terminal.js 渲染 -->
+                <div class="terminal-output" id="terminalOutput"></div>
+                <!-- 输入行：用 form 是为了让回车键自动触发 submit 事件 -->
+                <form class="terminal-input-line" id="terminalForm">
+                    <span class="prompt">Hg@lab ~ $</span>
+                    <input type="text" id="terminalInput" autocomplete="off" autofocus>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/terminal.js"></script>
+</body>
+</html>
