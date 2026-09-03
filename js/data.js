@@ -1,3 +1,4 @@
+//预设数据
 const PRESET_CONTACTS = [
     {
         id: 1,
@@ -13,6 +14,7 @@ const PRESET_CONTACTS = [
 
 const STORAGE_KEY = 'personal-site-contacts';
 
+//取出
 function loadContacts(){
     const str =localStorage.getItem('personal-site-contacts');
     if (str === null){
@@ -24,6 +26,7 @@ function loadContacts(){
     }
 }
 
+//存入
 function saveContacts(list){
     const str = JSON.stringify(list);
     localStorage.setItem('personal-site-contacts',JSON.stringify(list));
