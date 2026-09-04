@@ -19,13 +19,17 @@ terminalForm.addEventListener('submit', function(event){
     const input = terminalInput.value.trim();
     if (input === '') return;    //忽略空输入
     print('Hg@lab ~ $ ' + input,'cmd-echo');//回显
-    if(input==='help'){
+
+    const parts = input.split(' ').filter(s=>s!=='');
+
+    if(parts[0]==='help'){
         print('可用命令',`cmd-result`);
         print('help',`cmd-result`);
         print('about',`cmd-result`);
         print('ls',`cmd-result`);
+        print('contact 按名字查看联系人', 'cmd-result');
     }
-    else if(input==='ls'){
+    else if(parts[0]==='ls'){
         const contacts = loadContacts();
         if(contacts.length===0)
             print('通讯录为空', 'cmd-result');
@@ -34,7 +38,7 @@ terminalForm.addEventListener('submit', function(event){
                 print(contact.name, 'cmd-result');
             });
     }
-    else if(input==='about'){
+    else if(parts[0]==='about'){
         const contacts = loadContacts();
         const me = contacts.find(contact=>contact.id===1);
 
@@ -49,6 +53,27 @@ terminalForm.addEventListener('submit', function(event){
         }
         else{
             print('未找到个人信息', 'cmd-error');
+        }
+    }
+    else if(parts[0]==='contact'){
+        const name = parts[1];
+        if(!name){
+            print('用法: contact <名字>', 'cmd-error');
+        }
+        else{
+            const target = loadContacts().find(c => c.name === name);
+            if(target){
+            print(target.name, 'cmd-result');
+            print('专业：' + target.major, 'cmd-result');
+            print('方向：' + target.direction, 'cmd-result');
+            print('简介：' + target.intro, 'cmd-result');
+            print('技能：' + target.skills.join(' / '), 'cmd-result');
+            print('GitHub：' + target.github, 'cmd-result');
+            print('邮箱：' + target.email, 'cmd-result');
+            } 
+            else {
+            print('未找到: ' + name, 'cmd-error');
+            }
         }
     }
     else{

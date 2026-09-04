@@ -60,19 +60,23 @@ const cancelBtn = document.querySelector('#cancelBtn');
 
 //打开弹窗
 addBtn.addEventListener('click',function(){
+    editingId = null;       //新增模式
+    document.querySelector('#formTitle').textContent = '添加联系人';
+    contactForm.reset();  
     formModal.hidden = false;
 });
+
 //取消
 cancelBtn.addEventListener('click',function(){
     formModal.hidden = true;
 });
+
 //提交
 contactForm.addEventListener('submit',function(event){
     event.preventDefault();
     const fd = new FormData(contactForm);
 
     const newContact = {
-        id: Date.now(),
         name: fd.get('name'),
         major: fd.get('major'),
         direction: fd.get('direction'),
@@ -83,12 +87,27 @@ contactForm.addEventListener('submit',function(event){
     };
 
     const contacts = loadContacts();
-    contacts.push(newContact);
-    saveContacts(contacts);
 
+    if(editingId===null){
+        newContact.id = Date.now();
+        contacts.push(newContact);
+    }
+    else{
+        const target = contacts.find(c=>c.id===editingId);
+        target.name = newContact.name;
+        target.major = newContact.major;
+        target.direction = newContact.direction;
+        target.intro = newContact.intro;
+        target.skills = newContact.skills;
+        target.github = newContact.github;
+        target.email = newContact.email;
+    }
+
+    saveContacts(contacts);
     renderContacts();
-    contactForm.reset();
     formModal.hidden = true;
+    contactForm.reset();
+    editingId = null;
 });
 
 //详情弹窗
@@ -97,6 +116,7 @@ const detailModal = document.querySelector('#detailModal');
 const detailPanel = document.querySelector('#detailPanel');
 
 let currentContactId = null;        //当前正在看谁——第 8、9 项编辑/删除时要用
+let editingId = null;
 
 contactListEl.addEventListener('click',function(event){
     const itemEl = event.target.closest('.contact-item');
@@ -127,6 +147,31 @@ detailPanel.addEventListener('click',function(event){
 
     renderContacts();
     detailModal.hidden = true;
+});
+
+//编辑按钮：预填表单
+detailPanel.addEventListener('click', function(event){
+    const editBtn = event.target.closest('#editBtn');
+    if(editBtn===null)
+        return;
+    const contact = loadContacts().find(c=>c.id===currentContactId);
+    if(!contact)
+        return;
+
+    editingId = currentContactId;
+    document.querySelector('#formTitle').textContent = '编辑联系人';
+
+    //预填
+    contactForm.elements['name'].value = contact.name;
+    contactForm.elements['major'].value = contact.major;
+    contactForm.elements['direction'].value = contact.direction;
+    contactForm.elements['intro'].value = contact.intro;
+    contactForm.elements['skills'].value = contact.skills.join(', ');
+    contactForm.elements['github'].value = contact.github;
+    contactForm.elements['email'].value = contact.email;
+
+    detailModal.hidden = true;
+    formModal.hidden = false;
 });
 
 //点击弹窗背景关闭
