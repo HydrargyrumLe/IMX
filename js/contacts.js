@@ -117,6 +117,17 @@ const detailPanel = document.querySelector('#detailPanel');
 
 let currentContactId = null;        //当前正在看谁——第 8、9 项编辑/删除时要用
 let editingId = null;
+let closeTimer = null;
+
+//带退出动画的详情弹窗
+function closeDetailModal(){
+    detailPanel.classList.add('closing');
+    closeTimer = setTimeout(function(){
+        detailModal.hidden = true;
+        detailPanel.classList.remove('closing');
+        closeTimer = null;
+    },180);
+}
 
 contactListEl.addEventListener('click',function(event){
     const itemEl = event.target.closest('.contact-item');
@@ -128,6 +139,11 @@ contactListEl.addEventListener('click',function(event){
         return;
     currentContactId = contact.id;
     renderDetail(contact);
+    if(closeTimer){
+        clearTimeout(closeTimer);
+        closeTimer = null;
+    }
+    detailPanel.classList.remove('closing');
     detailModal.hidden = false;
 });
 
@@ -146,7 +162,7 @@ detailPanel.addEventListener('click',function(event){
     saveContacts(newList);
 
     renderContacts();
-    detailModal.hidden = true;
+    closeDetailModal();
 });
 
 //编辑按钮：预填表单
@@ -170,19 +186,20 @@ detailPanel.addEventListener('click', function(event){
     contactForm.elements['github'].value = contact.github;
     contactForm.elements['email'].value = contact.email;
 
-    detailModal.hidden = true;
+    closeDetailModal();
     formModal.hidden = false;
 });
 
 //点击弹窗背景关闭
 detailModal.addEventListener('click', function(event){
-    if (event.target === detailModal) detailModal.hidden = true;
+    if (event.target === detailModal) 
+        closeDetailModal();
 });
 
 //按Esc关闭所有弹窗
 document.addEventListener('keydown', function(event){
     if (event.key === 'Escape'){
-        detailModal.hidden = true;
+        closeDetailModal();
         formModal.hidden = true;
     }
 });
