@@ -186,3 +186,35 @@ document.addEventListener('keydown', function(event){
         formModal.hidden = true;
     }
 });
+
+//悬浮预览
+const previewEl = document.querySelector('#preview');
+
+function renderPreview(contact){
+    const skillsHtml = contact.skills.map(skill=>`<span class="p-skill">${skill}</span>`).join('');
+    previewEl.innerHTML = `
+    <div class="avatar">${contact.name[0]}</div>
+    <div class="p-name">${contact.name}</div>
+    <div class="p-major">${contact.major}</div>
+    <div class="p-intro">${contact.intro}</div>
+    <div class="p-skills">${skillsHtml}</div>`;
+}
+
+//移入列表行 → 渲染预览
+contactListEl.addEventListener('mouseover',function(event){
+    const itemEl = event.target.closest('.contact-item');
+    if(itemEl===null)
+        return;
+    const id = Number(itemEl.dataset.id);
+    const contact = loadContacts().find(c=>c.id===id);
+    if(!contact)
+        return;
+    renderPreview(contact);
+});
+
+//移出列表 → 恢复占位提示
+contactListEl.addEventListener('mouseout',function(event){
+    if(event.relatedTarget&&event.relatedTarget.closest('.contact-item'))
+        return;
+    previewEl.innerHTML = '<p class="preview-placeholder">← 将鼠标移到右侧列表项上预览</p>'
+});

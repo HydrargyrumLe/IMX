@@ -10,14 +10,24 @@ function print(line, className){
     terminalOutput.innerHTML += `<div class="${className}">${line}</div>`;
 }
 
-print('欢迎来到 Hg 的终端主页', 'cmd-result');
-print('输入 help 查看可用命令', 'cmd-result');
+let welcomeShow = true;
+function showWelcome(){
+    print('欢迎来到 Hg 的终端主页', 'cmd-result');
+    print('输入 help 查看可用命令', 'cmd-result');
+}
+
+showWelcome();
 
 //4. 提交事件
 terminalForm.addEventListener('submit', function(event){
     event.preventDefault();
     const input = terminalInput.value.trim();
-    if (input === '') return;    //忽略空输入
+    if (input === '') 
+        return;    //忽略空输入
+    if(welcomeShow){
+        terminalOutput.innerHTML = '';
+        welcomeShow = false;
+    }
     print('Hg@lab ~ $ ' + input,'cmd-echo');//回显
 
     const parts = input.split(' ').filter(s=>s!=='');
@@ -28,6 +38,7 @@ terminalForm.addEventListener('submit', function(event){
         print('about',`cmd-result`);
         print('ls',`cmd-result`);
         print('contact 按名字查看联系人', 'cmd-result');
+        print('clear', `cmd-result`);
     }
     else if(parts[0]==='ls'){
         const contacts = loadContacts();
@@ -40,7 +51,7 @@ terminalForm.addEventListener('submit', function(event){
     }
     else if(parts[0]==='about'){
         const contacts = loadContacts();
-        const me = contacts.find(contact=>contact.id===1);
+        const me = contacts.find(contact=>contact.name==='Hg');
 
         if(me){
         print(me.name, 'cmd-result');
@@ -75,6 +86,11 @@ terminalForm.addEventListener('submit', function(event){
             print('未找到: ' + name, 'cmd-error');
             }
         }
+    }
+    else if(parts[0]==='clear'){
+        terminalOutput.innerHTML = '';
+        showWelcome();
+        welcomeShow = true;
     }
     else{
             print('命令未找到：'+input,'cmd-error');//报错

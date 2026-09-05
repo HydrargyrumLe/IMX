@@ -16,7 +16,7 @@ const STORAGE_KEY = 'personal-site-contacts';
 
 //取出
 function loadContacts(){
-    const str =localStorage.getItem('personal-site-contacts');
+    const str =localStorage.getItem(STORAGE_KEY);
     if (str === null){
         localStorage.setItem(STORAGE_KEY,JSON.stringify(PRESET_CONTACTS));
         return PRESET_CONTACTS;
@@ -28,6 +28,5 @@ function loadContacts(){
 
 //存入
 function saveContacts(list){
-    const str = JSON.stringify(list);
-    localStorage.setItem('personal-site-contacts',JSON.stringify(list));
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(list));
 }
