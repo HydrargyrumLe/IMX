@@ -93,7 +93,41 @@ terminalForm.addEventListener('submit', function(event){
         welcomeShow = true;
     }
     else{
-            print('命令未找到：'+input,'cmd-error');//报错
+            print('命令未找到：'+input,'cmd-error');    //报错
     }
     terminalInput.value = '';//清空输入框
 });
+
+//欢迎动画
+const welcome = document.querySelector('#welcome');
+let welcomeGone = false;
+
+function dismissWelcome(){
+    if(welcomeGone) return;
+    welcomeGone = true;
+    welcome.classList.add('hide');
+    setTimeout(function(){
+        welcome.remove();
+    },400);
+}
+
+if(document.referrer.includes('contacts.html'))
+    welcome.remove();
+else{
+    welcome.addEventListener('click',dismissWelcome);
+    document.addEventListener('keydown',function(event){
+        if(event.key===' '&&!welcomeGone){
+            event.preventDefault();
+            dismissWelcome();
+        }
+    });
+}
+    
+
+/*welcome.addEventListener('click',dismissWelcome);
+document.addEventListener('keydown',function(event){
+    if(event.key===' '&&!welcomeGone){
+        event.preventDefault();
+        dismissWelcome();
+    }
+});*/
